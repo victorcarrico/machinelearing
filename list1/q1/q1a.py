@@ -3,9 +3,9 @@ from knn import KNN
 
 def main():
 
-    KNearest = KNN('iris.data', 'iris.test')
+    KNearest = KNN('wdbc.data', 'wdbc.test', 1)
     # KNearest.get_k_nearest(KNearest.data_test[1], 5)
-    KNearest.solve(17)
+    KNearest.solve(5)
         
 
     # print('Data {}: '.format(data))
