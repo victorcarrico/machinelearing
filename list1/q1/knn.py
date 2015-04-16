@@ -5,7 +5,7 @@ from itertools import groupby
 
 
 class KNN():
-    def __init__(self, fname_data, class_position, skip_column=None):
+    def __init__(self, fname_data, fname_test, class_position, skip_column=None):
         """
             class_position indicates position of class argument
             in dataset
@@ -15,9 +15,9 @@ class KNN():
         self.class_position = self._get_class_position(class_position, skip_column)
         self.classification = self._find_classes()
         self.all_data = self._load_data(fname_data, skip_column)
-        #self.data_test = self._load_data(fname_test)
         self.data = self.get_train_data()
-        self.data_test = self.get_test_data()
+        self.data_test = self._load_data(fname_test, skip_column)
+        #self.data_test = self.get_test_data()
 
     def _get_class_position(self, class_position, skip_column):
         if skip_column:
@@ -35,6 +35,8 @@ class KNN():
         classes = []
         pos = self.class_position
         for vector in self.raw_data:
+            print(vector)
+            print(pos)
             if vector[pos] not in classes:
                 classes.append(str(vector[pos].strip()))
 
@@ -60,7 +62,6 @@ class KNN():
     def get_train_data(self):
         length_train = int(0.7 * len(self.all_data))
         return self.all_data[np.random.choice(self.all_data.shape[0], length_train)]
-
 
     def _delta(self, a, b):
         return 1.0 if a == b else 0.0
@@ -101,7 +102,7 @@ class KNN():
         test = [vector[self.class_position] for vector in self.data_test]
         matches = len([i for i, j in zip(result, test) if i == j])
         total = len(self.data_test)
-        rate = float(matches/total)
+        rate = float(matches)/total
 
         return rate
 
